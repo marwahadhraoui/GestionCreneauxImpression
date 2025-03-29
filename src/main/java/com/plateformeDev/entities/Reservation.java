@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Reservation {
@@ -14,6 +16,9 @@ public class Reservation {
 	private String niveau,specialite,matiere;
 	private int nbrPage;
 	
+	@OneToOne
+    @JoinColumn(name = "creneaux_id", unique = true)
+    private Creneaux creneaux;
 	
 	public Reservation() {
 		
@@ -65,10 +70,19 @@ public class Reservation {
 		this.nbrPage = nbrPage;
 	}
 
+	
+	public Creneaux getCreneaux() {
+		return creneaux;
+	}
+
+	public void setCreneaux(Creneaux creneaux) {
+		this.creneaux = creneaux;
+	}
+
 	@Override
 	public String toString() {
 		return "Reservation [id=" + id + ", typeImpression=" + typeImpression + ", niveau=" + niveau + ", specialite="
-				+ specialite + ", matiere=" + matiere + ", nbrPage=" + nbrPage + "]";
+				+ specialite + ", matiere=" + matiere + ", nbrPage=" + nbrPage + ", creneaux=" + creneaux + "]";
 	}
 	
 	

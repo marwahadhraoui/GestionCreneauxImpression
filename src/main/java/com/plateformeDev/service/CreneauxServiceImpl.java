@@ -3,10 +3,12 @@ package com.plateformeDev.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.plateformeDev.entities.Creneaux;
 import com.plateformeDev.repos.CreneauxRepository;
 
+@Service
 public class CreneauxServiceImpl implements CreneauxService {
 
 	@Autowired
