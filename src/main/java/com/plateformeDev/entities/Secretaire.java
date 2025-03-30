@@ -2,12 +2,15 @@ package com.plateformeDev.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
 @Entity
 public class Secretaire extends User {
+	@JsonIgnore
 	@OneToMany(mappedBy = "secretaire", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Creneaux> creneaux;
 

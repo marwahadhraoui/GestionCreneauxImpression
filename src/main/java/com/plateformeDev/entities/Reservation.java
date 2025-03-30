@@ -1,5 +1,6 @@
 package com.plateformeDev.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +17,8 @@ public class Reservation {
 	private String niveau,specialite,matiere;
 	private int nbrPage;
 	
-	@OneToOne
-    @JoinColumn(name = "creneaux_id", unique = true)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "creneaux_id")
     private Creneaux creneaux;
 	
 	public Reservation() {

@@ -3,6 +3,8 @@ package com.plateformeDev.entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,15 +19,16 @@ public class Creneaux {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	private LocalDate date;
 	private LocalTime heure;
 	private String statut;
-	
 	@ManyToOne
 	@JoinColumn(name = "secretaire_id")
-	private Secretaire secretaire;
+	private User  secretaire;
 
 	@OneToOne(mappedBy = "creneaux", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private Reservation reservation;
 	
 	public Creneaux() {
@@ -61,11 +64,11 @@ public class Creneaux {
 	}
 	
 
-	public Secretaire getSecretaire() {
+	public User  getSecretaire() {
 		return secretaire;
 	}
 
-	public void setSecretaire(Secretaire secretaire) {
+	public void setSecretaire(User secretaire) {
 		this.secretaire = secretaire;
 	}
 
@@ -76,6 +79,10 @@ public class Creneaux {
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
 	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	@Override
 	public String toString() {
