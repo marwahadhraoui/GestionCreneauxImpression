@@ -35,8 +35,20 @@ public class ReservationImpl implements ReservationService {
 
 	@Override
 	public Reservation updateReservation(Reservation r) {
-        return reservationRepo.save(r);
-    }
+	    Reservation existingReservation = reservationRepo.findById(r.getId())
+	        .orElseThrow(() -> new RuntimeException("Reservation not found with id: " + r.getId()));
+
+	    // Mettre à jour uniquement les champs nécessaires
+	    existingReservation.setCreneaux(r.getCreneaux());
+	    existingReservation.setMatiere(r.getMatiere());
+	    existingReservation.setNbrPage(r.getNbrPage());
+	    existingReservation.setNiveau(r.getNiveau());
+	    existingReservation.setSpecialite(r.getSpecialite());
+	    existingReservation.setTypeImpression(r.getTypeImpression());
+
+	    return reservationRepo.save(existingReservation);
+	}
+
 
 	@Override
 	public void deleteReservation(Reservation r) {

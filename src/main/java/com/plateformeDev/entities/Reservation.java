@@ -1,5 +1,7 @@
 package com.plateformeDev.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +21,9 @@ public class Reservation {
 	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "creneaux_id")
+	@JsonBackReference 
     private Creneaux creneaux;
+
 	
 	public Reservation() {
 		

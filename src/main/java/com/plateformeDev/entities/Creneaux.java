@@ -3,7 +3,7 @@ package com.plateformeDev.entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -21,23 +21,30 @@ public class Creneaux {
 	private int id;
 	
 	private LocalDate date;
-	private LocalTime heure;
+	private LocalTime heureDebut;
+	private LocalTime heureFin;
 	private String statut;
 	@ManyToOne
 	@JoinColumn(name = "secretaire_id")
 	private User  secretaire;
+	@JsonManagedReference
 
 	@OneToOne(mappedBy = "creneaux", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	 // pour éviter la référence circulaire
 	private Reservation reservation;
 	
 	public Creneaux() {
 	}
 
-	public Creneaux(LocalDate date, LocalTime heure, String statut) {
+	public Creneaux(LocalDate date, LocalTime heureDebut, LocalTime heureFin, String statut, User secretaire,
+			Reservation reservation) {
+		super();
 		this.date = date;
-		this.heure = heure;
+		this.heureDebut = heureDebut;
+		this.heureFin = heureFin;
 		this.statut = statut;
+		this.secretaire = secretaire;
+		this.reservation = reservation;
 	}
 
 	public int getId() {
@@ -50,12 +57,7 @@ public class Creneaux {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
-	public LocalTime getHeure() {
-		return heure;
-	}
-	public void setHeure(LocalTime heure) {
-		this.heure = heure;
-	}
+	
 	public String getStatut() {
 		return statut;
 	}
@@ -77,19 +79,36 @@ public class Creneaux {
 	}
 
 	public void setReservation(Reservation reservation) {
-		this.reservation = reservation;
-	}
+        this.reservation = reservation;
+    }
 	public void setId(int id) {
 		this.id = id;
 	}
 
 
-	@Override
-	public String toString() {
-		return "Creneaux [id=" + id + ", date=" + date + ", heure=" + heure + ", statut=" + statut + ", secretaire="
-				+ secretaire + ", reservation=" + reservation + "]";
+	public LocalTime getHeureDebut() {
+		return heureDebut;
 	}
 
+	public void setHeureDebut(LocalTime heureDebut) {
+		this.heureDebut = heureDebut;
+	}
+
+	public LocalTime getHeureFin() {
+		return heureFin;
+	}
+
+	public void setHeureFin(LocalTime heureFin) {
+		this.heureFin = heureFin;
+	}
+
+	@Override
+	public String toString() {
+		return "Creneaux [id=" + id + ", date=" + date + ", heureDebut=" + heureDebut + ", heureFin=" + heureFin
+				+ ", statut=" + statut + ", secretaire=" + secretaire + ", reservation=" + reservation + "]";
+	}
+
+	
 	
 	
 	

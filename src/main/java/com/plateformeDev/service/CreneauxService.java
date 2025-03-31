@@ -13,5 +13,4 @@ public interface CreneauxService {
 	Creneaux getCreneau(int id);
 	List<Creneaux> getAllCreneaux();
 
-
 }
