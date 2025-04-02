@@ -32,7 +32,6 @@ public class ReservationImpl implements ReservationService {
 
         return reservationRepo.save(r);
     }
-
 	@Override
 	public Reservation updateReservation(Reservation r) {
 	    Reservation existingReservation = reservationRepo.findById(r.getId())

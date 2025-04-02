@@ -1,8 +1,12 @@
 package com.plateformeDev.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.plateformeDev.entities.Creneaux;
@@ -36,6 +40,19 @@ public class CreneauxServiceImpl implements CreneauxService {
 			// Associer l'utilisateur en tant que secrétaire au créneau
 			c.setSecretaire(user);
 		}
+		// Si le créneau est annulé, on peut l'utiliser
+		if ("annule".equalsIgnoreCase(c.getStatut())) {
+			c.setStatut("RESERVE"); // Mettre à jour le statut
+			creneauxRepo.save(c);
+		} else {
+
+			// Vérifier si le créneau est déjà réservé dans la même période
+			boolean exists = creneauxRepo.existsByDateAndTimeOverlap(c.getDate(), c.getHeureDebut(), c.getHeureFin());
+
+			if (exists) {
+				throw new RuntimeException("This time slot is already reserved.");
+			}
+		}
 
 		return creneauxRepo.save(c);
 	}
@@ -68,5 +85,22 @@ public class CreneauxServiceImpl implements CreneauxService {
 		return creneauxRepo.findById(id).get();
 
 	}
+	
+	@Override
+	@Scheduled(fixedRate = 60000) // Runs every 60 seconds
+	public void updateCreneauxStatus() {
+		 LocalDateTime now = LocalDateTime.now();
+		 LocalDate nowDate = now.toLocalDate();   // Extract the date
+		 LocalTime nowTime = now.toLocalTime();   // Extract the time
+
+		    List<Creneaux> creneauxList = creneauxRepo.findAllByStatutAndDateTimeBefore("RESERVE", nowDate, nowTime);
+	    
+	    for (Creneaux creneaux : creneauxList) {
+	            creneaux.setStatut("TERMINE");
+	            creneauxRepo.save(creneaux);
+	        
+	    }
+	}
+
 
 }

@@ -11,5 +11,7 @@ public interface UserService {
 	void deleteUserById(int id);
 	User getUser(int id);
 	List<User> getAllUsers();
-	List<User> getSecretaires();	
+	List<User> getSecretaires();
+	User findByEmailAndPassword(String email, String password);
+
 }

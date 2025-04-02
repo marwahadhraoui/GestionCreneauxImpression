@@ -9,5 +9,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	//jpa repo dispose de toutes les methodes qu'on est besoin comme save,findbyid,findall,delete,...
     List<User> findByRole(String role);
+    User findByEmailAndMdp(String email, String mdp);
+
 
 }

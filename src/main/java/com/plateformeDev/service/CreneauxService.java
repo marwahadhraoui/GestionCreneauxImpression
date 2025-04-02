@@ -12,5 +12,6 @@ public interface CreneauxService {
 	void deleteCreneauxById(int id);
 	Creneaux getCreneau(int id);
 	List<Creneaux> getAllCreneaux();
+	void updateCreneauxStatus();
 
 }

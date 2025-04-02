@@ -50,5 +50,10 @@ public class UserServiceImpl implements UserService {
 	public List<User> getSecretaires() {
 		return userRepo.findByRole("SECRETAIRE");
 	}
+	
+	@Override
+	public User findByEmailAndPassword(String email, String password) {
+	    return userRepo.findByEmailAndMdp(email, password);
+	}
 
 }

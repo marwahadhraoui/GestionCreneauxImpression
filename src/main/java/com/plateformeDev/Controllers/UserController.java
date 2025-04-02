@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.plateformeDev.dto.Login;
 import com.plateformeDev.entities.User;
 import com.plateformeDev.service.UserService;
 
@@ -55,5 +56,16 @@ public class UserController {
         userService.deleteUserById(id);
     }
 	
+	@PostMapping("/login")
+	public User login(@RequestBody Login loginRequest) {
+	    User user = userService.findByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
+	    if (user != null) {
+	        return user; // Retourne l'utilisateur si l'authentification réussit
+	    } else {
+	        throw new RuntimeException("Invalid email or password");
+	    }
+	}
+
+
 	
 }
