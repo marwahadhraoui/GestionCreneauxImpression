@@ -56,11 +56,12 @@ public class UserController {
         userService.deleteUserById(id);
     }
 	
+
 	@PostMapping("/login")
 	public User login(@RequestBody Login loginRequest) {
 	    User user = userService.findByEmailAndPassword(loginRequest.getEmail(), loginRequest.getPassword());
 	    if (user != null) {
-	        return user; // Retourne l'utilisateur si l'authentification réussit
+	        return user;
 	    } else {
 	        throw new RuntimeException("Invalid email or password");
 	    }

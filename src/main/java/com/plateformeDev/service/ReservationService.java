@@ -12,4 +12,6 @@ public interface ReservationService {
     void deleteReservationById(int id);
     Reservation getReservation(int id);
     List<Reservation> getAllReservations();
+    List<Reservation> findByEnseignantId(Long enseignantId);
+    public Reservation associateWithExamen(int reservationId, Long examenId);
 }

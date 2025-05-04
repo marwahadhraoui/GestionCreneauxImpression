@@ -8,9 +8,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,12 +31,15 @@ public class Reservation {
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "creneaux_id")
 	@JsonBackReference 
-    private Creneaux creneaux;
-
+    private Creneaux creneaux; 
 	
-	public Reservation() {
-		
-	}
+	@ManyToOne
+	@JoinColumn(name = "enseignant_id")
+	private Enseignant enseignant; 
+	
+	 @ManyToOne
+    @JoinColumn(name = "examen_id")
+    private Examen examen;
 
 	public Reservation(String typeImpression, String niveau, String specialite, String matiere, int nbrPage) {
 		super();
@@ -38,51 +50,7 @@ public class Reservation {
 		this.nbrPage = nbrPage;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getTypeImpression() {
-		return typeImpression;
-	}
-	public void setTypeImpression(String typeImpression) {
-		this.typeImpression = typeImpression;
-	}
-	public String getNiveau() {
-		return niveau;
-	}
-	public void setNiveau(String niveau) {
-		this.niveau = niveau;
-	}
-	public String getSpecialite() {
-		return specialite;
-	}
-	public void setSpecialite(String specialite) {
-		this.specialite = specialite;
-	}
-	public String getMatiere() {
-		return matiere;
-	}
-	public void setMatiere(String matiere) {
-		this.matiere = matiere;
-	}
-	public int getNbrPage() {
-		return nbrPage;
-	}
-	public void setNbrPage(int nbrPage) {
-		this.nbrPage = nbrPage;
-	}
-
-	
-	public Creneaux getCreneaux() {
-		return creneaux;
-	}
-
-	public void setCreneaux(Creneaux creneaux) {
-		this.creneaux = creneaux;
-	}
+	 
 
 	@Override
 	public String toString() {

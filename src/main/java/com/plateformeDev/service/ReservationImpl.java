@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.plateformeDev.entities.Creneaux;
+import com.plateformeDev.entities.Examen;
 import com.plateformeDev.entities.Reservation;
 import com.plateformeDev.repos.CreneauxRepository;
+import com.plateformeDev.repos.ExamenRepository;
 import com.plateformeDev.repos.ReservationRepository;
 
 @Service
@@ -18,6 +20,9 @@ public class ReservationImpl implements ReservationService {
 	    
 	 @Autowired
 	 private CreneauxRepository creneauxRepo;
+	 
+	 @Autowired
+	 private ExamenRepository examenRepo;
 
 	@Override
 	public Reservation saveReservation(Reservation r) {
@@ -69,6 +74,20 @@ public class ReservationImpl implements ReservationService {
 	public List<Reservation> getAllReservations() {
         return reservationRepo.findAll();
 
-	}
+	} 
+	
+	 @Override
+    public List<Reservation> findByEnseignantId(Long enseignantId) {
+	 return   reservationRepo.findByEnseignantId(enseignantId);
+         
+    } 
+	 
+	 public Reservation associateWithExamen(int reservationId, Long examenId) {
+		    Reservation reservation = reservationRepo.findById(reservationId).orElseThrow();
+		    Examen examen = examenRepo.findById(examenId).orElseThrow();
+		    
+		    reservation.setExamen(examen);
+		    return reservationRepo.save(reservation);
+		}
 
 }
