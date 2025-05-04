@@ -3,6 +3,7 @@ package com.plateformeDev.service;
 import java.util.List;
 
 import com.plateformeDev.entities.Creneaux;
+import com.plateformeDev.entities.User;
 
 public interface CreneauxService {
 	
@@ -13,5 +14,6 @@ public interface CreneauxService {
 	Creneaux getCreneau(int id);
 	List<Creneaux> getAllCreneaux();
 	void updateCreneauxStatus();
+	public List<Creneaux> getCreneauxByUser(User secretaire);
 
 }

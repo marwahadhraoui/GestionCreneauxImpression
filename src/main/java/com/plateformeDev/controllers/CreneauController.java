@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.plateformeDev.entities.Creneaux;
+import com.plateformeDev.entities.User;
 import com.plateformeDev.service.CreneauxService;
+import com.plateformeDev.service.UserService;
 
 @RestController
 @RequestMapping("/creneaux")
@@ -22,7 +24,10 @@ import com.plateformeDev.service.CreneauxService;
 public class CreneauController {
 
     @Autowired
-    private CreneauxService creneauxService;
+    private CreneauxService creneauxService; 
+    
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public List<Creneaux> getAllCreneaux() {
@@ -48,5 +53,16 @@ public class CreneauController {
     @DeleteMapping("/{id}")
     public void deleteCreneau(@PathVariable("id") int id) {
         creneauxService.deleteCreneauxById(id);
-    }
+    } 
+    
+    @GetMapping("/secretaire/{userId}")
+	public List<Creneaux> getCreneauxBySecretaire(@PathVariable int userId) {
+		User secretaire = userService.getUser(userId); // Récupérer l'utilisateur par son ID
+		if (secretaire != null ) {
+			return creneauxService.getCreneauxByUser(secretaire);
+		} else {
+			// Gérer le cas où l'utilisateur n'est pas trouvé ou n'est pas un secrétaire
+			throw new RuntimeException("Secrétaire non trouvé ou ID utilisateur invalide.");
+		}
+	}
 }

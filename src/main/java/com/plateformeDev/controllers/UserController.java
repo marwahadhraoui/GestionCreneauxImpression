@@ -3,6 +3,7 @@ package com.plateformeDev.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,9 +41,21 @@ public class UserController {
 		return userService.getUser(id);
 	}
 
+	 
+	
 	@PostMapping
-	public User createUser(@RequestBody User u) {
-		return userService.saveUser(u);	
+	public ResponseEntity<?> createUser(@RequestBody User u) {
+	    try {
+	        // Validation manuelle
+	        if (u.getMdp() == null || u.getMdp().isEmpty()) {
+	            return ResponseEntity.badRequest().body("Le mot de passe est requis");
+	        }
+	        
+	        User createdUser = userService.saveUser(u);
+	        return ResponseEntity.ok(createdUser);
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    }
 	}
 	
 	@PutMapping("/{id}")

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.plateformeDev.entities.Creneaux;
+import com.plateformeDev.entities.User;
 
 public interface CreneauxRepository extends JpaRepository<Creneaux, Integer> {
 	@Query("SELECT COUNT(c) > 0 FROM Creneaux c WHERE c.date = :date AND "
@@ -20,6 +21,9 @@ public interface CreneauxRepository extends JpaRepository<Creneaux, Integer> {
 	
 	
 	@Query("SELECT c FROM Creneaux c WHERE c.statut = :statut AND (c.date < :nowDate OR (c.date = :nowDate AND c.heureFin <= :nowTime))")
-	List<Creneaux> findAllByStatutAndDateTimeBefore(@Param("statut") String statut, @Param("nowDate") LocalDate nowDate, @Param("nowTime") LocalTime nowTime);
+	List<Creneaux> findAllByStatutAndDateTimeBefore(@Param("statut") String statut, @Param("nowDate") LocalDate nowDate, @Param("nowTime") LocalTime nowTime); 
+	
+	
+	List<Creneaux> findBySecretaire(User secretaire);
 }
 

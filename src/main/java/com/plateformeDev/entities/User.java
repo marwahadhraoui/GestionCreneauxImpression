@@ -22,14 +22,18 @@ public class User {
    
     private String role;
     
-    // Ajoutez cette méthode pour le cryptage
-    public void setEncryptedPassword(String rawPassword, PasswordEncoder passwordEncoder) {
-        this.mdp = passwordEncoder.encode(rawPassword);
-    }
+   
     
     // Ajoutez cette méthode pour vérifier le mot de passe
     public boolean checkPassword(String rawPassword, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(rawPassword, this.mdp);
+    } 
+    
+    public void setEncryptedPassword(String rawPassword, PasswordEncoder passwordEncoder) {
+        if (rawPassword == null || rawPassword.isEmpty()) {
+            throw new IllegalArgumentException("Le mot de passe ne peut pas être vide");
+        }
+        this.mdp = passwordEncoder.encode(rawPassword);
     }
 
     @Override

@@ -21,7 +21,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     
     @Override
-    public User saveUser(User u) {
+    public User saveUser(User u) { 
+    	 if (u.getMdp() == null || u.getMdp().isEmpty()) {
+    	        throw new IllegalArgumentException("Le mot de passe est requis");
+    	    }
         // Crypter le mot de passe avant sauvegarde
         u.setEncryptedPassword(u.getMdp(), passwordEncoder);
         
@@ -104,6 +107,15 @@ public class UserServiceImpl implements UserService {
     public User findByEmailAndPassword(String email, String password) {
         User user = userRepo.findByEmail(email);
         if (user != null && user.checkPassword(password, passwordEncoder)) {
+            return user;
+        }
+        return null;
+    }
+    
+    @Override
+    public User findByEmail(String email) {
+        User user = userRepo.findByEmail(email);
+        if (user != null ) {
             return user;
         }
         return null;

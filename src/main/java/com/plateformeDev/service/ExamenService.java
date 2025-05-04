@@ -49,5 +49,10 @@ public class ExamenService {
     public List<Examen> getExamens()
     {
     	return examenRepository.findAll();
+    } 
+    
+    public void saveAll(List<Examen> examens)
+    {
+    	examenRepository.saveAll(examens);
     }
 }

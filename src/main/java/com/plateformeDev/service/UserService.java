@@ -13,5 +13,6 @@ public interface UserService {
 	List<User> getAllUsers();
 	List<User> getSecretaires();
 	User findByEmailAndPassword(String email, String password);
+	User findByEmail(String email);
 
 }

@@ -3,12 +3,15 @@ package com.plateformeDev.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+ 
 import com.plateformeDev.entities.Creneaux;
 import com.plateformeDev.entities.User;
 import com.plateformeDev.repos.CreneauxRepository;
@@ -31,11 +34,11 @@ public class CreneauxServiceImpl implements CreneauxService {
 					.orElseThrow(() -> new RuntimeException("User not found with id: " + c.getSecretaire().getId()));
 
 			// Vérifier si l'utilisateur a bien le rôle "SECRETAIRE"
-			boolean isSecretaire = user.getRole().equalsIgnoreCase("SECRETAIRE");
+			/*boolean isSecretaire = user.getRole().equalsIgnoreCase("SECRETAIRE");
 
 			if (!isSecretaire) {
 				throw new RuntimeException("L'utilisateur avec l'ID " + user.getId() + " n'est pas un secrétaire.");
-			}
+			}*/
 
 			// Associer l'utilisateur en tant que secrétaire au créneau
 			c.setSecretaire(user);
@@ -76,8 +79,13 @@ public class CreneauxServiceImpl implements CreneauxService {
 	}
 
 	@Override
-	public List<Creneaux> getAllCreneaux() {
-		return creneauxRepo.findAll();
+	public List<Creneaux> getAllCreneaux() { 
+		 List<Creneaux> cren = creneauxRepo.findAll();
+	        
+	        return cren.stream()
+	                .sorted(Comparator.comparing(Creneaux::getDate))
+	                .collect(Collectors.toList());
+		 
 	}
 
 	@Override
@@ -102,5 +110,8 @@ public class CreneauxServiceImpl implements CreneauxService {
 	    }
 	}
 
-
+	@Override
+	public List<Creneaux> getCreneauxByUser(User secretaire) {
+		return creneauxRepo.findBySecretaire(secretaire);
+	}
 }
